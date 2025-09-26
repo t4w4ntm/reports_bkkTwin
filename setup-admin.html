@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Setup — BangkokTwin</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            inter: ['Inter', 'system-ui', 'sans-serif'],
+            orbitron: ['Orbitron', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
+
+  <style>
+    .glass {
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    body {
+      font-family: Inter, system-ui, sans-serif;
+    }
+    .bg-ambient {
+      background: 
+        radial-gradient(40rem 35rem at 20% 15%, rgba(34,197,94,.08), transparent 50%),
+        radial-gradient(45rem 30rem at 80% 25%, rgba(147,51,234,.12), transparent 60%),
+        radial-gradient(50rem 35rem at 70% 85%, rgba(99,102,241,.18), transparent 60%),
+        linear-gradient(180deg, #0b1220 0%, #0f1a2e 100%);
+      filter: saturate(105%);
+      animation: ambientShift 22s ease-in-out infinite alternate;
+    }
+    @keyframes ambientShift {
+      0%   { filter: hue-rotate(0deg) saturate(105%); }
+      100% { filter: hue-rotate(12deg) saturate(115%); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .bg-ambient { animation: none; }
+    }
+  </style>
+</head>
+<body class="min-h-screen text-white bg-ambient">
+  <!-- Page wrapper -->
+  <div class="relative mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-6">
+    <!-- Top bar -->
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-8">
+      <div>
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-emerald-400/20 ring-1 ring-emerald-400/30 grid place-items-center">
+            <span class="text-emerald-300 font-orbitron font-bold">BT</span>
+          </div>
+          <h1 class="text-2xl font-bold font-orbitron tracking-wide">BangkokTwin — Setup</h1>
+        </div>
+        <p class="text-slate-300/85 text-sm mt-1">Create the first admin account for system setup.</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <a href="index.html" class="inline-flex items-center gap-2 rounded-xl bg-white/10 hover:bg-white/15 transition px-3.5 py-2 text-sm ring-1 ring-white/15">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M15 18l-6-6 6-6"/></svg>
+          Back to Home
+        </a>
+      </div>
+    </div>
+
+    <!-- Check if system is already set up -->
+    <div id="system-status" class="glass rounded-2xl ring-1 ring-white/10 p-6 mb-6">
+      <div class="flex items-center gap-3 mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-400" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.731 0 2.814-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"/></svg>
+        <h2 class="text-xl font-semibold">System Status</h2>
+      </div>
+      <div id="status-message" class="text-slate-300">
+        <div class="flex items-center gap-2">
+          <div class="w-4 h-4 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin"></div>
+          Checking system status...
+        </div>
+      </div>
+    </div>
+
+    <!-- Create First Admin Account -->
+    <div id="setup-form-container" class="glass rounded-2xl ring-1 ring-white/10 p-6 hidden">
+      <div class="flex items-center gap-3 mb-6">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <h2 class="text-xl font-semibold">Create First Admin Account</h2>
+      </div>
+      
+      <form id="setupForm" class="space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="space-y-2">
+            <label for="username" class="block text-sm font-medium">
+              Username <span class="text-red-400">*</span>
+            </label>
+            <input type="text" id="username" name="username" required
+              class="w-full rounded-xl bg-white/5 ring-1 ring-white/10 focus:ring-emerald-400/40 focus:ring-2 outline-none px-4 py-3 text-sm"
+              placeholder="Enter admin username">
+          </div>
+          
+          <div class="space-y-2">
+            <label for="password" class="block text-sm font-medium">
+              Password <span class="text-red-400">*</span>
+            </label>
+            <input type="password" id="password" name="password" required
+              class="w-full rounded-xl bg-white/5 ring-1 ring-white/10 focus:ring-emerald-400/40 focus:ring-2 outline-none px-4 py-3 text-sm"
+              placeholder="Enter secure password">
+          </div>
+        </div>
+        
+        <div class="space-y-2">
+          <label for="confirmPassword" class="block text-sm font-medium">
+            Confirm Password <span class="text-red-400">*</span>
+          </label>
+          <input type="password" id="confirmPassword" name="confirmPassword" required
+            class="w-full rounded-xl bg-white/5 ring-1 ring-white/10 focus:ring-emerald-400/40 focus:ring-2 outline-none px-4 py-3 text-sm"
+            placeholder="Confirm your password">
+        </div>
+
+        <!-- Password Requirements -->
+        <div class="rounded-xl bg-blue-500/10 border border-blue-500/30 p-4">
+          <h3 class="text-sm font-medium text-blue-300 mb-2">Password Requirements:</h3>
+          <ul class="text-xs text-blue-200 space-y-1">
+            <li>• At least 6 characters long</li>
+            <li>• Contains letters and numbers</li>
+            <li>• Keep it secure and memorable</li>
+          </ul>
+        </div>
+
+        <!-- Error Message -->
+        <div id="errorMessage" class="hidden">
+          <div class="rounded-xl bg-red-500/15 border border-red-500/30 px-4 py-3 text-sm text-red-300">
+            <div class="flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="15" y1="9" x2="9" y2="15"/>
+                <line x1="9" y1="9" x2="15" y2="15"/>
+              </svg>
+              <span id="errorText">Error message</span>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" id="setupButton" class="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-500/90 hover:bg-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed transition px-4 py-3 text-sm font-semibold">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+          <span id="setupButtonText">Create Admin Account</span>
+        </button>
+      </form>
+    </div>
+
+    <!-- Success Message -->
+    <div id="successMessage" class="glass rounded-2xl ring-1 ring-white/10 p-6 hidden">
+      <div class="text-center">
+        <div class="w-16 h-16 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M20 6L9 17l-5-5"/>
+          </svg>
+        </div>
+        <h2 class="text-2xl font-bold text-emerald-400 mb-2">Setup Complete!</h2>
+        <p class="text-slate-300 mb-6">Your admin account has been created successfully.</p>
+        <div class="flex justify-center gap-3">
+          <a href="login.html" class="inline-flex items-center gap-2 rounded-xl bg-emerald-500/90 hover:bg-emerald-500 transition px-4 py-3 text-sm font-semibold">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+              <polyline points="10,17 15,12 10,7"/>
+              <line x1="15" y1="12" x2="3" y2="12"/>
+            </svg>
+            Go to Login
+          </a>
+          <a href="index.html" class="inline-flex items-center gap-2 rounded-xl bg-white/10 hover:bg-white/15 transition px-4 py-3 text-sm ring-1 ring-white/15">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            </svg>
+            Back to Home
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="fixed bottom-4 left-1/2 -translate-x-1/2 z-[60] hidden">
+    <div class="rounded-xl bg-black/80 text-white px-4 py-2 text-sm ring-1 ring-white/15" id="toastText">Message</div>
+  </div>
+
+  <!-- Firebase Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+  <script>
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAddqe5R7F1lu-i5JCE6Hk0wWy1M24ryXE",
+      authDomain: "reporttwinbkk.firebaseapp.com",
+      projectId: "reporttwinbkk",
+      storageBucket: "reporttwinbkk.appspot.com",
+      messagingSenderId: "593076843667",
+      appId: "1:593076843667:web:87dd8c8bb2e30a5a5b6234"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+  </script>
+
+  <!-- Setup Script -->
+  <script>
+    // Utility functions
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const toastText = document.getElementById('toastText');
+      toastText.textContent = message;
+      toast.classList.remove('hidden');
+      setTimeout(() => toast.classList.add('hidden'), 3000);
+    }
+
+    function showError(message) {
+      const errorDiv = document.getElementById('errorMessage');
+      const errorText = document.getElementById('errorText');
+      errorText.textContent = message;
+      errorDiv.classList.remove('hidden');
+    }
+
+    function hideError() {
+      const errorDiv = document.getElementById('errorMessage');
+      errorDiv.classList.add('hidden');
+    }
+
+    // Password hashing function (same as simple-auth.js)
+    async function hashPassword(password, salt) {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(password + salt);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    function generateSalt() {
+      const array = new Uint8Array(16);
+      crypto.getRandomValues(array);
+      return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+    }
+
+    // Check system status on page load
+    async function checkSystemStatus() {
+      try {
+        const adminsSnapshot = await db.collection('admin_users').get();
+        const statusDiv = document.getElementById('status-message');
+        const formContainer = document.getElementById('setup-form-container');
+
+        if (adminsSnapshot.empty) {
+          statusDiv.innerHTML = `
+            <div class="flex items-center gap-2 text-yellow-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.731 0 2.814-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"/>
+              </svg>
+              System not initialized. No admin accounts found.
+            </div>
+          `;
+          formContainer.classList.remove('hidden');
+        } else {
+          const adminCount = adminsSnapshot.size;
+          statusDiv.innerHTML = `
+            <div class="flex items-center gap-2 text-emerald-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M20 6L9 17l-5-5"/>
+              </svg>
+              System is already initialized. Found ${adminCount} admin account(s).
+            </div>
+            <div class="mt-3 text-sm text-slate-300">
+              <p>The system is already set up. You can:</p>
+              <div class="flex gap-2 mt-2">
+                <a href="login.html" class="inline-flex items-center gap-2 rounded-xl bg-emerald-500/90 hover:bg-emerald-500 transition px-3 py-2 text-sm font-semibold">
+                  Login to Admin Panel
+                </a>
+                <a href="index.html" class="inline-flex items-center gap-2 rounded-xl bg-white/10 hover:bg-white/15 transition px-3 py-2 text-sm ring-1 ring-white/15">
+                  Back to Home
+                </a>
+              </div>
+            </div>
+          `;
+        }
+      } catch (error) {
+        console.error('Error checking system status:', error);
+        const statusDiv = document.getElementById('status-message');
+        statusDiv.innerHTML = `
+          <div class="flex items-center gap-2 text-red-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="15" y1="9" x2="9" y2="15"/>
+              <line x1="9" y1="9" x2="15" y2="15"/>
+            </svg>
+            Error connecting to database: ${error.message}
+          </div>
+        `;
+      }
+    }
+
+    // Handle form submission
+    document.getElementById('setupForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      hideError();
+
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      const submitButton = document.getElementById('setupButton');
+      const buttonText = document.getElementById('setupButtonText');
+
+      if (password !== confirmPassword) {
+        showError('Passwords do not match');
+        return;
+      }
+
+      if (password.length < 6) {
+        showError('Password must be at least 6 characters long');
+        return;
+      }
+
+      // Disable form
+      submitButton.disabled = true;
+      buttonText.textContent = 'Creating account...';
+
+      try {
+        // Check if username already exists
+        const existingUser = await db.collection('admin_users').doc(username).get();
+        if (existingUser.exists) {
+          showError('Username already exists');
+          return;
+        }
+
+        // Create admin account
+        const hashedPassword = await hashPassword(password, 'bkktwin_salt_2024');
+
+        await db.collection('admin_users').doc(username).set({
+          username: username,
+          passwordHash: hashedPassword,
+          created_at: firebase.firestore.FieldValue.serverTimestamp(),
+          role: 'admin',
+          isActive: true
+        });
+
+        // Show success message
+        document.getElementById('setup-form-container').classList.add('hidden');
+        document.getElementById('successMessage').classList.remove('hidden');
+        showToast('Admin account created successfully!');
+
+      } catch (error) {
+        console.error('Error creating admin account:', error);
+        showError('Error creating admin account: ' + error.message);
+      } finally {
+        submitButton.disabled = false;
+        buttonText.textContent = 'Create Admin Account';
+      }
+    });
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', checkSystemStatus);
+  </script>
+</body>
+</html>
